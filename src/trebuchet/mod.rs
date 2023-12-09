@@ -44,7 +44,7 @@ fn extract_numeric_at(source: &str, index: usize) -> Option<u32> {
     let number_as_char = source.chars().nth(index).expect("char should exist");
     let result = number_as_char
         .to_digit(10)
-        .expect("char should be convertable to numeric");
+        .expect("char should be convertible to numeric");
 
     return Some(result);
 }
