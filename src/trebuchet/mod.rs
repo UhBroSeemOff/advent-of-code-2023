@@ -4,8 +4,8 @@ use crate::{Solver, Stage};
 
 use self::{easy::find_numbers_easy_way, hard::find_numbers_hard_way};
 
-pub mod easy;
-pub mod hard;
+mod easy;
+mod hard;
 
 pub struct TrebuchetSolver {
     file: PathBuf,
