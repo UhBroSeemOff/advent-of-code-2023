@@ -12,8 +12,14 @@ pub fn solve_task() -> Option<()> {
     let options = Options::parse();
 
     let solver: Box<dyn Solver> = match options.task {
-        Task::Trebuchet => Box::new(TrebuchetSolver::new(options.file, options.stage)),
-        Task::CubeGame => Box::new(CubeGameSolver::new(options.file, options.stage)),
+        Task::Trebuchet => Box::new(TrebuchetSolver::new(
+            options.file,
+            options.stage.unwrap_or_default(),
+        )),
+        Task::CubeGame => Box::new(CubeGameSolver::new(
+            options.file,
+            options.stage.unwrap_or_default(),
+        )),
     };
 
     solver.solve()?;
@@ -42,15 +48,11 @@ pub enum Stage {
     Hard,
 }
 
-#[derive(Debug, clap::Args)]
-#[group(required = true, multiple = false)]
-struct Command {}
-
 #[derive(Parser)]
 struct Options {
     #[clap(value_enum)]
     pub task: Task,
     file: std::path::PathBuf,
     #[clap(short, long, value_enum)]
-    pub stage: Stage,
+    pub stage: Option<Stage>,
 }
