@@ -1,12 +1,14 @@
 mod cube_game;
+mod options;
+mod solver;
 mod trebuchet;
 
-use std::path::PathBuf;
-
-use clap::{Parser, ValueEnum};
+use clap::Parser;
 
 use cube_game::CubeGameSolver;
 use trebuchet::TrebuchetSolver;
+
+use crate::{options::*, solver::Solver};
 
 pub fn solve_task() -> Option<()> {
     let options = Options::parse();
@@ -22,37 +24,9 @@ pub fn solve_task() -> Option<()> {
         )),
     };
 
-    solver.solve()?;
+    let answer = solver.solve()?;
+
+    println!("Result: {answer}");
+
     Some(())
-}
-
-pub trait Solver {
-    fn new(file: PathBuf, stage: Stage) -> Self
-    where
-        Self: Sized;
-    fn solve(&self) -> Option<()>;
-}
-
-#[derive(ValueEnum, Clone, Copy, Debug)]
-#[clap(rename_all = "kebab_case")]
-enum Task {
-    Trebuchet,
-    CubeGame,
-}
-
-#[derive(ValueEnum, Clone, Copy, Debug, Default)]
-#[clap(rename_all = "kebab_case")]
-pub enum Stage {
-    #[default]
-    Easy,
-    Hard,
-}
-
-#[derive(Parser)]
-struct Options {
-    #[clap(value_enum)]
-    pub task: Task,
-    file: std::path::PathBuf,
-    #[clap(short, long, value_enum)]
-    pub stage: Option<Stage>,
 }

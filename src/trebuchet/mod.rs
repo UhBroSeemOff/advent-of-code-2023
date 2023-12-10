@@ -1,11 +1,11 @@
+mod easy;
+mod hard;
+
 use std::{fs, path::PathBuf};
 
 use crate::{Solver, Stage};
 
 use self::{easy::find_numbers_easy_way, hard::find_numbers_hard_way};
-
-mod easy;
-mod hard;
 
 pub struct TrebuchetSolver {
     file: PathBuf,
@@ -20,7 +20,7 @@ impl Solver for TrebuchetSolver {
         TrebuchetSolver { file, stage }
     }
 
-    fn solve(&self) -> Option<()> {
+    fn solve(&self) -> Option<String> {
         let file_content = fs::read_to_string(self.file.to_owned()).expect("file should exist");
 
         let lines = file_content.lines();
@@ -28,8 +28,7 @@ impl Solver for TrebuchetSolver {
             .map(|line| find_numbers(line, self.stage).expect("number should be parsed"))
             .sum();
 
-        println!("Result: {result}");
-        Some(())
+        Some(result.to_string())
     }
 }
 

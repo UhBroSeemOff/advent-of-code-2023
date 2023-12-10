@@ -1,25 +1,18 @@
 mod data;
+mod easy;
+mod hard;
 mod parser;
 
 use std::{fs, path::PathBuf};
 
-use crate::{Solver, Stage};
+use crate::{cube_game::easy::find_possible_games_sum, Solver, Stage};
 
-use self::{
-    data::{Game, GameSet},
-    parser::Parser,
-};
+use self::{data::Game, parser::Parser};
 
 pub struct CubeGameSolver {
     file: PathBuf,
     stage: Stage,
 }
-
-const PRESET: GameSet = GameSet {
-    red: 12,
-    green: 13,
-    blue: 14,
-};
 
 enum Colors {
     Red(u32),
@@ -35,26 +28,18 @@ impl Solver for CubeGameSolver {
         CubeGameSolver { file, stage }
     }
 
-    fn solve(&self) -> Option<()> {
+    fn solve(&self) -> Option<String> {
         let file_content = fs::read_to_string(self.file.to_owned()).expect("file should exist");
 
         let lines = file_content.lines();
 
         let games: Vec<Game> = lines.map(|line| Game::parse(line)).collect();
 
-        let possible_games = games.iter().filter(|game| is_game_possible(game));
-        let result: u32 = possible_games.map(|game| game.id).sum();
+        let result = match self.stage {
+            Stage::Easy => find_possible_games_sum(&games)?,
+            Stage::Hard => todo!(),
+        };
 
-        println!("Result: {result}");
-
-        return Some(());
+        return Some(result.to_string());
     }
-}
-
-fn is_game_possible(input: &Game) -> bool {
-    input.subsets.iter().all(is_set_possible)
-}
-
-fn is_set_possible(input: &GameSet) -> bool {
-    input.blue <= PRESET.blue && input.green <= PRESET.green && input.red <= PRESET.red
 }
