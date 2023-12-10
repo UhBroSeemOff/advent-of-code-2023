@@ -7,7 +7,7 @@ use std::{fs, path::PathBuf};
 
 use crate::{cube_game::easy::find_possible_games_sum, Solver, Stage};
 
-use self::{data::Game, parser::Parser};
+use self::{data::Game, hard::find_minimal_cubes_quantities, parser::Parser};
 
 pub struct CubeGameSolver {
     file: PathBuf,
@@ -37,7 +37,7 @@ impl Solver for CubeGameSolver {
 
         let result = match self.stage {
             Stage::Easy => find_possible_games_sum(&games)?,
-            Stage::Hard => todo!(),
+            Stage::Hard => find_minimal_cubes_quantities(&games)?,
         };
 
         return Some(result.to_string());
