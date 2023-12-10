@@ -5,6 +5,7 @@ use clap::{Parser, ValueEnum};
 pub enum Task {
     Trebuchet,
     CubeGame,
+    GearRatios,
 }
 
 #[derive(ValueEnum, Clone, Copy, Debug, Default)]
